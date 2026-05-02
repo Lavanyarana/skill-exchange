@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { io } from "socket.io-client";
-const socket = io("http://localhost:5000");
+const socket = io("http://13.235.70.78:5000/");
 
 function Dashboard() {
   const [skillsOffered, setSkillsOffered] = useState("");
@@ -17,7 +17,6 @@ function Dashboard() {
     if (!userId) return;
 
     socket.emit("join", userId);
-    
 
     const handleNotification = () => {
       setUnreadCount((prev) => prev + 1);
@@ -37,7 +36,7 @@ function Dashboard() {
   const handleUpdateSkills = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/users/update-skills/${userId}`,
+        `http://13.235.70.78:5000/api/users/update-skills/${userId}`,
         {
           skillsOffered: skillsOffered.split(","),
           skillsWanted: skillsWanted.split(","),
@@ -56,7 +55,7 @@ function Dashboard() {
   const fetchMatches = useCallback(async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/users/match/${userId}`,
+        `http://13.235.70.78:5000/api/users/match/${userId}`,
       );
       setMatches(res.data);
     } catch {
@@ -68,7 +67,7 @@ function Dashboard() {
   const fetchRequests = useCallback(async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/requests/received/${userId}`,
+        `http://13.235.70.78:5000/api/requests/received/${userId}`,
       );
       setRequests(res.data);
     } catch {
@@ -80,7 +79,7 @@ function Dashboard() {
   const fetchUnread = useCallback(async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5000/api/messages/unread/${userId}`,
+        `http://13.235.70.78:5000/api/messages/unread/${userId}`,
       );
       setUnreadCount(res.data.count);
     } catch {
@@ -91,7 +90,7 @@ function Dashboard() {
   // 🔹 Send Request
   const sendRequest = async (receiverId, skill) => {
     try {
-      await axios.post("http://localhost:5000/api/requests/send", {
+      await axios.post("http://13.235.70.78:5000/api/requests/send", {
         sender: userId,
         receiver: receiverId,
         skill,
@@ -106,7 +105,7 @@ function Dashboard() {
   const updateRequest = async (requestId, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/requests/update/${requestId}`,
+        `http://13.235.70.78:5000/api/requests/update/${requestId}`,
         { status },
       );
       fetchRequests();

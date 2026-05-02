@@ -11,7 +11,7 @@ function Profile() {
   const handleChangePassword = async () => {
     try {
       await axios.put(
-        `http://localhost:5000/api/users/change-password/${userId}`,
+        `http://13.235.70.78:5000/api/users/change-password/${userId}`,
         {
           password: newPassword,
         },
@@ -28,7 +28,7 @@ function Profile() {
     const fetchUser = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/users/${userId}`,
+          `http://13.235.70.78:5000/api/users/${userId}`,
         );
         setUser(res.data);
       } catch {
