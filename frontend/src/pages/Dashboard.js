@@ -27,9 +27,13 @@ function Dashboard() {
 
   const handleUpdateSkills = async () => {
     try {
+      // ✅ FIX: trim spaces from each skill after splitting
+      const offeredArray = skillsOffered.split(",").map((s) => s.trim()).filter(Boolean);
+      const wantedArray = skillsWanted.split(",").map((s) => s.trim()).filter(Boolean);
+
       await axios.put(`${API}/api/users/update-skills/${userId}`, {
-        skillsOffered: skillsOffered.split(","),
-        skillsWanted: skillsWanted.split(","),
+        skillsOffered: offeredArray,
+        skillsWanted: wantedArray,
       });
       setSuccessMsg("Skills updated successfully!");
       setErrorMsg("");
@@ -45,7 +49,7 @@ function Dashboard() {
       const res = await axios.get(`${API}/api/users/match/${userId}`);
       setMatches(res.data);
     } catch {
-      alert("Error fetching matches");
+      console.log("Error fetching matches");
     }
   }, [userId]);
 
@@ -54,7 +58,7 @@ function Dashboard() {
       const res = await axios.get(`${API}/api/requests/received/${userId}`);
       setRequests(res.data);
     } catch {
-      alert("Error fetching requests");
+      console.log("Error fetching requests");
     }
   }, [userId]);
 
@@ -103,8 +107,14 @@ function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+
+      {/* ✅ Navbar with App Name */}
       <div className="flex justify-between items-center mb-8 bg-white p-4 rounded-xl shadow">
-        <h1 className="text-2xl font-bold text-gray-800">Skill Exchange</h1>
+        <div className="flex items-center gap-3">
+          <span className="text-2xl font-extrabold bg-gradient-to-r from-blue-500 to-indigo-600 bg-clip-text text-transparent">
+            🔄 SkillXchange
+          </span>
+        </div>
         <div className="flex gap-3 items-center">
           <button className="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600" onClick={() => (window.location.href = "/profile")}>Profile</button>
           <button title="New messages" className="relative bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600" onClick={() => (window.location.href = "/chat")}>
@@ -121,23 +131,24 @@ function Dashboard() {
       </div>
 
       <div className="bg-white p-6 rounded-2xl shadow-md hover:shadow-lg transition border mb-6">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Update Skills</h2>
+        <h2 className="text-lg font-semibold mb-1 text-gray-700">Update Skills</h2>
+        <p className="text-gray-400 text-sm mb-4">Separate multiple skills with commas e.g. Java, Python</p>
         {successMsg && <p className="text-green-500 mb-2">{successMsg}</p>}
         {errorMsg && <p className="text-red-500 mb-2">{errorMsg}</p>}
         <div className="grid md:grid-cols-2 gap-4">
-          <input className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" placeholder="Skills Offered (Java, HTML)" value={skillsOffered} onChange={(e) => setSkillsOffered(e.target.value)} />
-          <input className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" placeholder="Skills Wanted (Python, Design)" value={skillsWanted} onChange={(e) => setSkillsWanted(e.target.value)} />
+          <input className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" placeholder="Skills Offered (e.g. Java, HTML)" value={skillsOffered} onChange={(e) => setSkillsOffered(e.target.value)} />
+          <input className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-400" placeholder="Skills Wanted (e.g. Python, Design)" value={skillsWanted} onChange={(e) => setSkillsWanted(e.target.value)} />
         </div>
         <button className="mt-4 bg-blue-500 text-white px-5 py-2 rounded-lg hover:bg-blue-600" onClick={handleUpdateSkills}>Save Skills</button>
       </div>
 
       <div className="mb-6">
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Matches</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">Matches 🤝</h2>
         {matches.length === 0 ? (
-          <div className="text-center py-10">
+          <div className="text-center py-10 bg-white rounded-2xl shadow border">
             <p className="text-4xl mb-2">🔍</p>
             <p className="text-gray-500 font-medium">No matches yet</p>
-            <p className="text-gray-400 text-sm">Try adding more skills to find people</p>
+            <p className="text-gray-400 text-sm">Add skills above and save — matches update instantly!</p>
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -162,9 +173,9 @@ function Dashboard() {
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold mb-4 text-gray-700">Inbox</h2>
+        <h2 className="text-lg font-semibold mb-4 text-gray-700">Inbox 📩</h2>
         {requests.length === 0 ? (
-          <div className="text-center py-10">
+          <div className="text-center py-10 bg-white rounded-2xl shadow border">
             <p className="text-4xl mb-2">📩</p>
             <p className="text-gray-500 font-medium">No requests yet</p>
             <p className="text-gray-400 text-sm">Requests will appear here</p>
