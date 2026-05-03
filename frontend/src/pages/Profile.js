@@ -11,7 +11,7 @@ function Profile() {
   const handleChangePassword = async () => {
     try {
       await axios.put(
-        `http://13.235.70.78/api/users/change-password/${userId}`,
+        `https://skillchat.duckdns.org/api/users/change-password/${userId}`,
         {
           password: newPassword,
         },
@@ -27,7 +27,7 @@ function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://13.235.70.78/api/users/${userId}`);
+        const res = await axios.get(`https://skillchat.duckdns.org/api/users/${userId}`);
         setUser(res.data);
       } catch {
         alert("Error fetching profile");

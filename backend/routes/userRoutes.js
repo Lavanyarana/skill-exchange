@@ -1,7 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const User = require("../models/User");
+import express from "express";
+import User from "../models/User.js";
 
+const router = express.Router();
 // UPDATE USER SKILLS
 router.put("/update-skills/:id", async (req, res) => {
   try {
@@ -56,4 +56,5 @@ router.get("/", async (req, res) => {
     res.status(500).send("Error fetching users");
   }
 });
-module.exports = router;
+
+export default router;

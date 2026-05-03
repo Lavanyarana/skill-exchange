@@ -1,7 +1,6 @@
-const express = require("express");
+import express from "express";
+import Message from "../models/Message.js";
 const router = express.Router();
-const Message = require("../models/Message");
-
 // ✅ SEND MESSAGE
 router.post("/send", async (req, res) => {
   try {
@@ -83,4 +82,4 @@ router.get("/unread/:userId", async (req, res) => {
     res.status(500).send("Error");
   }
 });
-module.exports = router;
+export default router;

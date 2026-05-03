@@ -1,7 +1,7 @@
-const express = require("express");
-const router = express.Router();
-const Request = require("../models/Request");
+import express from "express";
+import Request from "../models/Request.js";
 
+const router = express.Router();
 // SEND REQUEST
 router.post("/send", async (req, res) => {
   try {
@@ -70,4 +70,5 @@ router.get("/sent/:userId", async (req, res) => {
   }
 });
 
-module.exports = router;
+
+export default router;

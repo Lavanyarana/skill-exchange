@@ -1,81 +1,82 @@
-const cors = require("cors");
-const express = require("express");
-const userRoutes = require("./routes/userRoutes");
-const connectDB = require("./config/db");
+import express from "express";
+import http from "http";
+import cors from "cors";
+import dotenv from "dotenv";
+import { Server } from "socket.io";
 
-const authRoutes = require("./routes/authRoutes");
-const requestRoutes = require("./routes/requestRoutes");
-const messageRoutes = require("./routes/messageRoutes");
+import connectDB from "./config/db.js";
+import userRoutes from "./routes/userRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
+import requestRoutes from "./routes/requestRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
+
+dotenv.config();
 
 const app = express();
-const dotenv = require("dotenv");
-dotenv.config();
-// Connect Database
+
+// DB
 connectDB();
 
 // Middleware
 app.use(express.json());
+
 app.use(
   cors({
-    origin: "http://localhost:3000",
-  }),
+    origin: [
+      "http://localhost:3000",
+      "https://skill-exchange-n717.vercel.app",
+      "https://skill-exchange-n717-lavanyaranas-projects.vercel.app"
+    ],
+    credentials: true,
+  })
 );
+
+// Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/requests", requestRoutes);
 app.use("/api/messages", messageRoutes);
 
-// Test Route
+// Test route
 app.get("/", (req, res) => {
-  res.send("API Running Successfully");
+  res.send("API Running Successfully 🚀");
 });
 
-const PORT = process.env.PORT || 5000;
-
-const http = require("http");
-const { Server } = require("socket.io");
-
+// ✅ ONLY ONE server
 const server = http.createServer(app);
 
+// ✅ Socket AFTER server
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: [
+      "https://skill-exchange-n717.vercel.app",
+      "https://skill-exchange-n717-lavanyaranas-projects.vercel.app"
+    ],
     methods: ["GET", "POST"],
   },
 });
 
-// 🔹 Socket.io Connection
+// Socket logic
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-  // ✅ JOIN USER ROOM (IMPORTANT)
   socket.on("join", (userId) => {
     socket.join(userId);
-    console.log(`User ${userId} joined their room`);
   });
 
-  // ✅ SEND MESSAGE
   socket.on("sendMessage", ({ sender, receiver, text }) => {
-    console.log("Message:", sender, "->", receiver);
-
-    // send message to receiver
-    io.to(receiver).emit("newNotification", {
+    io.to(receiver).emit("receiveMessage", {
       sender,
       text,
     });
-
-    // 🔔 send notification
-    io.to(receiver).emit("newNotification", {
-      message: "New message received",
-    });
   });
 
-  // 🔹 Disconnect
   socket.on("disconnect", () => {
-    console.log("User disconnected:", socket.id);
-  });
+    console.log("User disconnected:", socket.id); });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const PORT = process.env.PORT || 5000;
+
+// ✅ ONLY THIS LISTEN
+server.listen(PORT, () => { console.log(`Server running on port ${PORT}`);
 });
