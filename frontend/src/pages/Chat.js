@@ -51,7 +51,7 @@ function Chat() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("${API}/api/users");
+        const res = await axios.get("https://skillchat.duckdns.org/api/users");
         setUsers(res.data.filter((u) => u._id !== userId));
       } catch (error) {
         console.log(error);
@@ -75,14 +75,14 @@ function Chat() {
 
       try {
         const res = await axios.get(
-          `${API}/api/messages/${userId}/${receiver._id}`,
+          `https://skillchat.duckdns.org/api/messages/${userId}/${receiver._id}`,
         );
 
         setMessages(res.data);
 
         // mark messages as seen
         await axios.put(
-          `${API}/api/messages/seen/${receiver._id}/${userId}`,
+          `https://skillchat.duckdns.org/api/messages/seen/${receiver._id}/${userId}`,
         );
       } catch {
         alert("Error fetching messages");
@@ -104,7 +104,7 @@ function Chat() {
       });
 
       // still save in DB
-      await axios.post("${API}/api/messages/send", {
+      await axios.post("https://skillchat.duckdns.org/api/messages/send", {
 
         sender: userId,
         receiver: receiver._id,
@@ -114,7 +114,7 @@ function Chat() {
       setText("");
 
       const res = await axios.get(
-        `${API}/api/messages/${userId}/${receiver._id}`,
+        `https://skillchat.duckdns.org/api/messages/${userId}/${receiver._id}`,
       );
 
       setMessages(res.data);

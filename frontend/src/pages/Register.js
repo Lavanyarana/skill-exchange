@@ -10,7 +10,7 @@ function Register() {
   const handleRegister = async () => {
     try {
 
-      const res = await axios.post(`${API}/api/auth/register`, {
+      const res = await axios.post(`https://skillchat.duckdns.org/api/auth/register`, {
         name,
         email,
         password,
