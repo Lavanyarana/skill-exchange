@@ -8,7 +8,7 @@ function ForgotPassword() {
 
   const handleSubmit = async () => {
     try {
-      await axios.post("http://13.235.70.78/api/auth/forgot-password", {
+      await axios.post("https://skillchat.duckdns.org/api/auth/forgot-password", {
         email,
       });
       setMsg("Reset link sent!");
