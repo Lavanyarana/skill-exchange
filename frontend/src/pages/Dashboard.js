@@ -19,6 +19,7 @@ function Dashboard() {
   const [searchQuery, setSearchQuery] = useState("");
   const [activeCat, setActiveCat] = useState("All");
   const userId = localStorage.getItem("userId");
+  if (!userId) { window.location.href = "/"; }
 
   useEffect(() => {
     if (!userId) return;
@@ -415,6 +416,7 @@ function Dashboard() {
             ) : (
               <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill,minmax(300px,1fr))", gap:18 }}>
                 {requests.map(req => {
+                  if (!req.sender) return null;
                   const color = gc(req.sender.name);
                   return (
                     <div key={req._id} className="hov-card" style={{ background:"#fff", borderRadius:20, border:"1px solid #e2e8f0", overflow:"hidden", boxShadow:"0 4px 16px rgba(0,0,0,0.06)" }}>

@@ -27,6 +27,8 @@ app.use(cors({
     "https://skill-exchange-n717-lavanyaranas-projects.vercel.app",
     "https://skill-exchange-n717-rmeoqt7rf-lavanyaranas-projects.vercel.app",
     "https://skill-exchange-beige.vercel.app",
+    "https://skill-exchange-n717.vercel.app",
+    "https://skill-exchange-n717-git-main-lavanyaranas-projects.vercel.app",
   ],
   credentials: true,
 }));
@@ -39,7 +41,6 @@ app.use("/api/ai", aiRoutes);
 
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
 });
 
 const server = http.createServer(app);
@@ -50,6 +51,8 @@ const io = new Server(server, {
       "https://skillchat.duckdns.org",
       "https://skill-exchange-n717.vercel.app",
       "https://skill-exchange-beige.vercel.app",
+    "https://skill-exchange-n717.vercel.app",
+    "https://skill-exchange-n717-git-main-lavanyaranas-projects.vercel.app",
     ],
     methods: ["GET", "POST"],
   },
