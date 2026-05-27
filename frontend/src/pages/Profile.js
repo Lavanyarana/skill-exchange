@@ -40,7 +40,7 @@ function Profile() {
     </div>
   );
 
-  const avatarColors = ["#1a73e8", "#7c3aed", "#059669", "#dc2626", "#d97706", "#0891b2"];
+  // const avatarColors = ["#1a73e8", "#7c3aed", "#059669", "#dc2626", "#d97706", "#0891b2"];
   // const avatarColor = avatarColors[user.name.charCodeAt(0) % avatarColors.length];
 
   return (
