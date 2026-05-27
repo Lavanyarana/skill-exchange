@@ -16,7 +16,8 @@ function Home() {
   ];
 
   return (
-    <div className="bg-black text-white min-h-screen">
+    <div className="bg-gradient-to-b from-white via-purple-50 to-pink-50 text-gray-900 min-h-screen">
+
       {/* Navbar */}
       <nav className="flex justify-between items-center px-8 py-6 border-b border-gray-800">
         <h1 className="text-2xl font-bold">SkillExchange</h1>
@@ -31,7 +32,7 @@ function Home() {
 
           <a
             href="/register"
-            className="bg-white text-black px-5 py-2 rounded-xl font-semibold"
+            className="bg-purple-600 text-white hover:bg-purple-700  px-5 py-2 rounded-xl font-semibold"
           >
             Sign Up
           </a>
@@ -50,7 +51,7 @@ function Home() {
           Learn What You Love.
         </h1>
 
-        <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-lg">
+        <p className="text-gray-600 mt-6 max-w-2xl mx-auto text-lg">
           A peer-to-peer learning platform where skills are exchanged,
           not just taught.
         </p>
@@ -95,7 +96,7 @@ function Home() {
           ].map((item, i) => (
             <div
               key={i}
-              className="bg-gray-900 p-8 rounded-2xl border border-gray-800"
+              className="bg-white shadow-xl p-8 rounded-2xl border border-gray-800"
             >
               <div className="text-purple-400 text-3xl font-bold mb-4">
                 0{i + 1}
@@ -105,14 +106,14 @@ function Home() {
                 {item.title}
               </h3>
 
-              <p className="text-gray-400">{item.desc}</p>
+              <p className="text-gray-600">{item.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Skills */}
-      <section className="px-8 py-20 bg-gray-950">
+      <section className="px-8 py-20 bg-gradient-to-r from-purple-50 to-pink-50">
         <h2 className="text-4xl font-bold text-center mb-16">
           Featured Skills
         </h2>
@@ -121,7 +122,7 @@ function Home() {
           {skills.map((skill, i) => (
             <div
               key={i}
-              className="bg-gray-900 p-6 rounded-2xl border border-gray-800 hover:border-purple-500 transition"
+              className="bg-white shadow-xl p-6 rounded-2xl border border-gray-800 hover:border-purple-500 transition"
             >
               <h3 className="text-2xl font-semibold">{skill}</h3>
 
@@ -157,7 +158,7 @@ function Home() {
           ].map((item, i) => (
             <div
               key={i}
-              className="bg-gray-900 p-8 rounded-2xl border border-gray-800"
+              className="bg-white shadow-xl p-8 rounded-2xl border border-gray-800"
             >
               <div className="text-purple-400 mb-4">
                 {item.icon}
@@ -172,7 +173,7 @@ function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 py-10 text-center text-gray-500">
+      <footer className="border-t border-gray-200 py-10 text-center text-gray-500">
         © 2026 SkillExchange. All rights reserved.
       </footer>
     </div>

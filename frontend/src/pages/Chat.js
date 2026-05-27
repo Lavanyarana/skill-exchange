@@ -3,10 +3,13 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 
+
+
 const socket = io("https://skillchat.duckdns.org", { transports: ["websocket", "polling"] });
 
 function Chat() {
   const [users, setUsers] = useState([]);
+const [search, setSearch] = useState("");
   const [receiver, setReceiver] = useState(null);
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
@@ -22,17 +25,25 @@ function Chat() {
     };
     socket.on("receiveMessage", handleMessage);
     return () => socket.off("receiveMessage", handleMessage);
-  }, []);
+  }, [search]);
 
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try { const res = await axios.get("https://skillchat.duckdns.org/api/users"); setUsers(res.data.filter((u) => u._id !== userId)); }
-      catch { alert("Error fetching users"); }
-    };
-    fetchUsers();
-  }, [userId]);
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get(
+        `https://skillchat.duckdns.org/api/users?search=${search}`
+      );
+
+      setUsers(res.data.filter((u) => u._id !== userId));
+    } catch {
+      alert("Error fetching users");
+    }
+  };
+
+  fetchUsers();
+}, [search, userId]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -76,7 +87,14 @@ function Chat() {
         {/* User List */}
         <div style={{ flex: 1, overflowY: "auto" }}>
           {users.length === 0 && <p style={{ padding: "20px", color: "#9ca3af", fontSize: 14, textAlign: "center" }}>No users found</p>}
-          {users.map((user) => (
+         <input
+  type="text"
+  placeholder="Search users..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full p-3 rounded-xl border mb-4"
+/>
+ {users.map((user) => (
             <div key={user._id} onClick={() => setReceiver(user)}
               style={{ padding: "14px 20px", display: "flex", alignItems: "center", gap: 14, cursor: "pointer", background: receiver?._id === user._id ? "#e8f0fe" : "transparent", borderLeft: receiver?._id === user._id ? "3px solid #1a73e8" : "3px solid transparent", transition: "all 0.15s" }}>
               <div style={{ width: 42, height: 42, borderRadius: 12, background: "linear-gradient(135deg, #1a73e8, #0d47a1)", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontWeight: 700, fontSize: 18, flexShrink: 0 }}>{user.name[0]}</div>
