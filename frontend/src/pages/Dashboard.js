@@ -46,7 +46,7 @@ function Dashboard() {
     try { const r = await axios.get(`${API}/api/requests/received/${userId}`); setRequests(r.data); } catch {}
   }, [userId]);
   const fetchUnread = useCallback(async () => {
-    try { const r = await axios.get(`${API}/api/messages/unread/${userId}`); setUnreadCount(r.data.count); } catch {}
+    try { const r = await axios.get(`${API}/api/messages/unread/${userId}`); setUnreadCount(r.data.count); } catch { setUnreadCount(0); }
   }, [userId]);
 
   const sendRequest = async (rid, skill) => {
